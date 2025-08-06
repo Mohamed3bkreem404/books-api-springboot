@@ -28,19 +28,21 @@ public class BooksService {
 
     @Cacheable("AllBooks")
     public Page<BooksModel> getBooks(String author, String title, Integer year, Pageable pageable) {
+        System.out.println("Cashhh is workking");
         return booksRepo.searchBooks(author, title, year, pageable);
     }
 
-    @Caching(
-            put = @CachePut(value = "books", key = "#savedBook.id"),
-            evict = @CacheEvict(value = "AllBooks", allEntries = true)
-    )
-    public String addBooks(BooksModel booksModel, Locale locale) {
-        BooksModel savedBook = booksRepo.save(booksModel);
-        emailService.sendEmailToUser();
-        Locale effectiveLocale = (locale != null) ? locale : Locale.ENGLISH;
-        return messageSource.getMessage("book.add.success", null, effectiveLocale);
+    @CachePut(value = "books", key = "#book.id")
+    public BooksModel saveBook(BooksModel book) {
+        return booksRepo.save(book);
     }
+
+    public String addBooks(BooksModel book, Locale locale) {
+        BooksModel savedBook = saveBook(book);
+        emailService.sendEmailToUser();
+        return messageSource.getMessage("book.add.success", null, locale != null ? locale : Locale.ENGLISH);
+    }
+
 
     @Caching(
             evict = {
