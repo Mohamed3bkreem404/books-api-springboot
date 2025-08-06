@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandleing {
+public class GlobalExceptionHandling {
 
         @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException exception){

@@ -19,5 +19,5 @@ public interface BooksRepo extends JpaRepository<BooksModel, Integer> {
                     @Param("author") String author,
                     @Param("title") String title,
                     @Param("year") Integer year,
-                    Pageable pagable);
+                    Pageable pageable);
 }
